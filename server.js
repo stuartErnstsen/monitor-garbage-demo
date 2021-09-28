@@ -1,5 +1,4 @@
 const express = require('express')
-const { TooManyRequests } = require('http-errors')
 const path = require('path')
 const app = express()
 
@@ -14,6 +13,19 @@ const rollbar = new Rollbar({
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './client/index.html'))
     rollbar.info('Html was monitored successfully!')
+})
+
+//STUDENT STUFF -=----------------------------------------------------------------------------------------------
+
+const studentArr = []
+
+app.post('/api/students', (req, res) => {
+    const { name } = req.body
+    // const name = req.body.name
+    studentArr.push(name)
+
+    rollbar.log('Student successfully added!')
+    res.status(200).send(studentArr)
 })
 
 const port = process.env.PORT || 5656
